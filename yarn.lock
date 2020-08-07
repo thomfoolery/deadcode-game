@@ -1489,6 +1489,18 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@ion-phaser/core@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@ion-phaser/core/-/core-1.2.3.tgz#6e08296c16f2d5a9d7713fc3db41637270393da9"
+  integrity sha512-45TKHaW2OijqN3zGr7WUt2IPW6l0yu/MUYw8fX6qArBOmashxLFmhIQMz4A7KDMGkRX9uukLrBrnkfyc1tZp9Q==
+
+"@ion-phaser/react@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@ion-phaser/react/-/react-1.2.2.tgz#431900aefce6a0c2f29e4c9f1ff2b2306f21f929"
+  integrity sha512-wDcWM+tiNkNtY5jJDzVckJ/KE5l0V676Gaz6t6ihCDg31+HtUfugUdytPZBBqXgD6Pa7xbjqzY9C/8QfKFkWtQ==
+  dependencies:
+    "@ion-phaser/core" "^1.2.3"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -4642,6 +4654,11 @@ eventemitter3@^4.0.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.0.tgz#d65176163887ee59f386d64c82610b696a4a74eb"
   integrity sha512-qerSRB0p+UDEssxTtm6EDKcE7W4OaoisfIMl4CngyEhjpYglocpNg6UEqCvemdGhosAsg4sO2dXJOdyBifPGCg==
 
+eventemitter3@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.4.tgz#b5463ace635a083d018bdc7c917b4c5f10a85384"
+  integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
+
 events@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.1.0.tgz#84279af1b34cb75aa88bf5ff291f6d0bd9b31a59"
@@ -4709,6 +4726,15 @@ expect@^24.9.0:
     jest-matcher-utils "^24.9.0"
     jest-message-util "^24.9.0"
     jest-regex-util "^24.9.0"
+
+exports-loader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-1.1.0.tgz#26a16706e4cf533145de24c1419baf33b624fb5c"
+  integrity sha512-zGB2SujiAyO0Rwn4GQ17/HlT8cwmT8abcBeZpr2R3sItJ5sI5Y9BzNzus3H9tH1iWLAoJLi9N3TP54D2+j859Q==
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^2.7.0"
+    source-map "^0.6.1"
 
 express@^4.17.1:
   version "4.17.1"
@@ -5667,6 +5693,16 @@ import-local@^2.0.0:
   dependencies:
     pkg-dir "^3.0.0"
     resolve-cwd "^2.0.0"
+
+imports-loader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/imports-loader/-/imports-loader-1.1.0.tgz#1c3a388d0c5cd7f9eb08f3646d4aae3b70e57933"
+  integrity sha512-HcPM6rULdQ6EBLVq+5O+CF9xb7qiUjsRm6V28bTG/c3IU5sQkVZzUDwYY0r4jHvSAmVFdO9WA/vLAURR5WQSeQ==
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^2.7.0"
+    source-map "^0.6.1"
+    strip-comments "^2.0.1"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -6876,6 +6912,15 @@ loader-utils@^1.4.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
+loader-utils@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-2.0.0.tgz#e4cace5b816d425a166b5f097e10cd12b36064b0"
+  integrity sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
+    json5 "^2.1.2"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -7266,6 +7311,11 @@ mkdirp@^0.5.3:
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
+
+modern-css-reset@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/modern-css-reset/-/modern-css-reset-1.1.1.tgz#355944a01d3336a98e6a7fb027e458cc990b815e"
+  integrity sha512-lUkQHXyZNoehOrKqw5hMAw3wcUIWZrGDY8pdo8Nhh4sEhK1pObhVLTAFCDn5b3WraWo6et86m4h0Km7fuYILHg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -7954,6 +8004,14 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+path@^0.12.7:
+  version "0.12.7"
+  resolved "https://registry.yarnpkg.com/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
+  integrity sha1-1NwqUGxM4hl+tIHr/NWzbAFAsQ8=
+  dependencies:
+    process "^0.11.1"
+    util "^0.10.3"
+
 pbkdf2@^3.0.3:
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
@@ -7969,6 +8027,16 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+phaser@^3.24.1:
+  version "3.24.1"
+  resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.24.1.tgz#376e0c965d2a35af37c06ee78627dafbde5be017"
+  integrity sha512-WbrRMkbpEzarkfrq83akeauc6b8xNxsOTpDygyW7wrU2G2ne6kOYu3hji4UAaGnZaOLrVuj8ycYPjX9P1LxcDw==
+  dependencies:
+    eventemitter3 "^4.0.4"
+    exports-loader "^1.1.0"
+    imports-loader "^1.1.0"
+    path "^0.12.7"
 
 picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.2.2"
@@ -8785,7 +8853,7 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-process@^0.11.10:
+process@^0.11.1, process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
@@ -9655,7 +9723,7 @@ schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.1, schema-utils@^2.6
     ajv "^6.10.2"
     ajv-keywords "^3.4.1"
 
-schema-utils@^2.6.5:
+schema-utils@^2.6.5, schema-utils@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.7.0.tgz#17151f76d8eae67fbbf77960c33c676ad9f4efc7"
   integrity sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==
@@ -10271,6 +10339,11 @@ strip-comments@^1.0.2:
     babel-extract-comments "^1.0.0"
     babel-plugin-transform-object-rest-spread "^6.26.0"
 
+strip-comments@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/strip-comments/-/strip-comments-2.0.1.tgz#4ad11c3fbcac177a67a40ac224ca339ca1c1ba9b"
+  integrity sha512-ZprKx+bBLXv067WTCALv8SSz5l2+XhpYCsVtSqlMnkAXMWDq+/ekVbl1ghqP9rUHTzv6sm/DwCOiYutU/yp1fw==
+
 strip-eof@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/strip-eof/-/strip-eof-1.0.0.tgz#bb43ff5598a6eb05d89b59fcd129c983313606bf"
@@ -10786,6 +10859,13 @@ util@0.10.3:
   integrity sha1-evsa/lCAUkZInj23/g7TeTNqwPk=
   dependencies:
     inherits "2.0.1"
+
+util@^0.10.3:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
+  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
+  dependencies:
+    inherits "2.0.3"
 
 util@^0.11.0:
   version "0.11.1"
