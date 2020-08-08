@@ -5,6 +5,7 @@ import { IonPhaser } from "@ion-phaser/react";
 import styles from "./styles.module.css";
 
 const PLAYER_SPEED = 200;
+const IS_DEBUGGING = Boolean(process.env.REACT_APP_INITIAL_SCENE_ID);
 
 let player,
   // obstacles,
@@ -38,34 +39,42 @@ const scene = {
   create() {
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("world-1", "tiles");
-    const worldLayer = map.createStaticLayer("map", tileset, 0, 0);
 
+    const GRID_SIZE = map.tileWidth;
+    const WORLD_WIDTH = map.widthInPixels * GRID_SIZE;
+    const WORLD_HEIGHT = map.heightInPixels * GRID_SIZE;
+
+    const belowLayer = map.createStaticLayer("below", tileset, 0, 0);
+    const groundLayer = map
+      .createStaticLayer("ground", tileset, 0, 0)
+      .setCollisionByProperty({ collision: true });
+    const aboveLayer = map.createStaticLayer("above", tileset, 0, 0);
     const spawnPoint = map.findObject(
       "points",
       (obj) => obj.name === "PlayerSpawn"
     );
 
-    const GRID_SIZE = map.tileWidth;
-    const WORLD_WIDTH = map.widthInPixels * GRID_SIZE;
-    const WORLD_HEIGHT = map.heightInPixels * GRID_SIZE;
-    const PLAYER_SIZE = GRID_SIZE;
+    player = this.physics.add.image(spawnPoint.x, spawnPoint.y, "player");
+    player.body.height = player.body.height / 2;
+    player.body.offset.y = player.body.height;
+    player.setCollideWorldBounds(true);
 
     this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-    player = this.physics.add.image(spawnPoint.x, spawnPoint.y, "player");
-    // player.body.setSize(PLAYER_SIZE, PLAYER_SIZE);
-    player.setCollideWorldBounds(true);
+    const layers = [belowLayer, groundLayer, player, aboveLayer];
+    layers.map((x, index) => x.setDepth(index));
 
-    worldLayer.setCollisionByProperty({ collision: true });
+    if (IS_DEBUGGING) {
+      const debugGraphics = this.add.graphics().setAlpha(0.2);
+      groundLayer.renderDebug(debugGraphics, {
+        tileColor: null, // Color of non-colliding tiles
+        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
+      });
+      debugGraphics.setDepth(layers.length);
+    }
 
-    // const debugGraphics = this.add.graphics().setAlpha(0.75);/
-    // worldLayer.renderDebug(debugGraphics, {
-    //   tileColor: null, // Color of non-colliding tiles
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-    // });
-
-    this.physics.add.collider(player, worldLayer, () => {
+    this.physics.add.collider(player, groundLayer, () => {
       player.body.setVelocity(0, 0);
     });
 
@@ -106,7 +115,7 @@ const game = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: Boolean(process.env.REACT_APP_INITIAL_SCENE_ID),
+      debug: IS_DEBUGGING,
     },
   },
   scene,
