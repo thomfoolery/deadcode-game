@@ -53,7 +53,7 @@ const scene = {
     this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
     player = this.physics.add.image(spawnPoint.x, spawnPoint.y, "player");
-    player.body.setSize(PLAYER_SIZE, PLAYER_SIZE);
+    // player.body.setSize(PLAYER_SIZE, PLAYER_SIZE);
     player.setCollideWorldBounds(true);
 
     worldLayer.setCollisionByProperty({ collision: true });
