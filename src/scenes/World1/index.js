@@ -1,125 +1,115 @@
 import React from "react";
 import Phaser from "phaser";
 import { IonPhaser } from "@ion-phaser/react";
-
 import styles from "./styles.module.css";
 
-const PLAYER_SPEED = 200;
+import {
+  gameFactory,
+  createLayers,
+  createPlayer,
+  setupCameras,
+  setupPhysics,
+  setupPathFinder,
+  setupDebugLayer,
+  constrainDestinationToWorldBounds,
+} from "utilities";
+
+const SCALE = 1;
+const PLAYER_SPEED = 200 * SCALE;
 const IS_DEBUGGING = Boolean(process.env.REACT_APP_INITIAL_SCENE_ID);
 
-let player,
-  // obstacles,
-  destination;
+function getPointerDownHandler(map, scene) {
+  const GRID_SIZE = map.tileWidth * SCALE;
+  const WORLD_WIDTH = map.widthInPixels * SCALE;
+  const WORLD_HEIGHT = map.heightInPixels * SCALE;
 
-function roundToGrid(position, gridSize) {
-  const x = Math.round(position.x / gridSize) * gridSize;
-  const y = Math.round(position.y / gridSize) * gridSize;
-  return { x, y };
-}
+  const player = scene.registry.get("player");
 
-function constrainDestinationToWorldBounds(position, width, height, gridSize) {
-  const roundedPosition = roundToGrid(position, gridSize);
-  const x = Math.min(
-    width - gridSize / 2,
-    Math.max(0 + gridSize / 2, roundedPosition.x)
-  );
-  const y = Math.min(
-    height - gridSize / 2,
-    Math.max(0 + gridSize / 2, roundedPosition.y)
-  );
-  return { x, y };
-}
-
-const scene = {
-  preload() {
-    this.load.image("player", "assets/player.png");
-    this.load.image("tiles", "assets/tilemap/world-1.png");
-    this.load.tilemapTiledJSON("map", "assets/tilemap/world-1.json");
-  },
-  create() {
-    const map = this.make.tilemap({ key: "map" });
-    const tileset = map.addTilesetImage("world-1", "tiles");
-
-    const GRID_SIZE = map.tileWidth;
-    const WORLD_WIDTH = map.widthInPixels * GRID_SIZE;
-    const WORLD_HEIGHT = map.heightInPixels * GRID_SIZE;
-
-    const belowLayer = map.createStaticLayer("below", tileset, 0, 0);
-    const groundLayer = map
-      .createStaticLayer("ground", tileset, 0, 0)
-      .setCollisionByProperty({ collision: true });
-    const aboveLayer = map.createStaticLayer("above", tileset, 0, 0);
-    const spawnPoint = map.findObject(
-      "points",
-      (obj) => obj.name === "PlayerSpawn"
+  return (pointer) => {
+    const newDestination = constrainDestinationToWorldBounds(
+      scene.cameras.main.getWorldPoint(pointer.x, pointer.y),
+      WORLD_WIDTH,
+      WORLD_HEIGHT,
+      GRID_SIZE
     );
 
-    player = this.physics.add.image(spawnPoint.x, spawnPoint.y, "player");
-    player.body.height = player.body.height / 2;
-    player.body.offset.y = player.body.height;
-    player.setCollideWorldBounds(true);
+    scene.physics.moveToObject(player, newDestination, PLAYER_SPEED);
+    scene.registry.set("destination", newDestination);
 
-    this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    // const fromX = Math.floor(player.x / GRID_SIZE);
+    // const fromY = Math.floor(player.y / GRID_SIZE);
+    // const toX = Math.floor(destination.x / GRID_SIZE);
+    // const toY = Math.floor(destination.y / GRID_SIZE);
 
-    const layers = [belowLayer, groundLayer, player, aboveLayer];
-    layers.map((x, index) => x.setDepth(index));
+    // console.log(fromX, fromY, toX, toY);
+    // const pathFinder = scene.registry.get("pathFinder");
+    // pathFinder.findPath(fromX, fromY, toX, toY, (path) => console.log(path));
+    // pathFinder.calculate();
+  };
+}
 
-    if (IS_DEBUGGING) {
-      const debugGraphics = this.add.graphics().setAlpha(0.2);
-      groundLayer.renderDebug(debugGraphics, {
-        tileColor: null, // Color of non-colliding tiles
-        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-      });
-      debugGraphics.setDepth(layers.length);
-    }
+function initialize() {
+  this.registry.set("scale", SCALE);
+  this.registry.set("player", null);
+  this.registry.set("destination", null);
+  this.registry.set("isDebugging", IS_DEBUGGING);
+}
 
-    this.physics.add.collider(player, groundLayer, () => {
-      player.body.setVelocity(0, 0);
-    });
+function preload() {
+  this.load.image("player", "assets/player.png");
+  this.load.image("tiles", "assets/tilemap/world-1.png");
+  this.load.tilemapTiledJSON("map", "assets/tilemap/world-1.json");
+}
 
-    destination = player.body.position;
+function create() {
+  const map = this.make.tilemap({ key: "map" });
+  const tileset = map.addTilesetImage("world-1", "tiles");
 
-    this.cameras.main.startFollow(player, true);
+  this.registry.set("map", map);
+  this.registry.set("tileset", tileset);
 
-    this.input.on("pointerdown", (pointer) => {
-      destination = constrainDestinationToWorldBounds(
-        this.cameras.main.getWorldPoint(pointer.x, pointer.y),
-        WORLD_WIDTH,
-        WORLD_HEIGHT,
-        GRID_SIZE
-      );
-      this.physics.moveToObject(player, destination, PLAYER_SPEED);
-    });
-  },
-  update() {
-    const distance = Phaser.Math.Distance.Between(
-      player.x,
-      player.y,
-      destination.x,
-      destination.y
-    );
+  const player = createPlayer(map, this);
 
-    if (distance < 4) {
-      player.body.setVelocity(0, 0);
-    }
-  },
-};
+  this.registry.set("player", player);
+  this.registry.set("pathFinder", setupPathFinder(this));
+  this.registry.set("destination", player.body.position);
 
-const game = {
-  width: "100%",
-  height: "100%",
-  renderer: Phaser.AUTO,
-  disableContextMenu: true,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 0 },
-      debug: IS_DEBUGGING,
-    },
-  },
-  scene,
-};
+  const layers = createLayers(this);
+  const collisionLayer = layers[1];
+
+  this.registry.set("layers", layers);
+  this.registry.set("collisionLayer", collisionLayer);
+
+  setupPhysics(this);
+  setupCameras(this);
+
+  this.input.on("pointerdown", getPointerDownHandler(map, this));
+
+  if (IS_DEBUGGING) {
+    setupDebugLayer(collisionLayer, layers, this);
+    console.log("tileset", tileset);
+    console.log("player", player);
+    console.log("scene", this);
+    console.log("map", map);
+  }
+}
+
+function update() {
+  const player = this.registry.get("player");
+  const destination = this.registry.get("destination");
+  const distance = Phaser.Math.Distance.Between(
+    player.x,
+    player.y,
+    destination.x,
+    destination.y
+  );
+
+  if (distance < 4) {
+    player.body.setVelocity(0, 0);
+  }
+}
+
+const game = gameFactory({ initialize, preload, create, update });
 
 function World1Scene() {
   return (
